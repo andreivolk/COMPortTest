@@ -19,7 +19,7 @@ namespace ComPortTest
         }
         public static void OpenSerialPort(string selectedPort)
         {
-            _serialPort.PortName = "COM" + selectedPort;
+            _serialPort.PortName = "COM" + selectedPort.Trim();
             try
             {
                 Console.WriteLine("Trying to open Serial Port: {0}", _serialPort.PortName);
