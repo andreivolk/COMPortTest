@@ -49,7 +49,7 @@ namespace ComPortTest
             {
                 try
                 {
-                    byte[] instruction = Encoding.ASCII.GetBytes(command);
+                    byte[] instruction = Encoding.ASCII.GetBytes(command.Trim());
                     _serialPort.Write(instruction, 0, instruction.Length);
                     Console.WriteLine("Sending message: {0}", DateTime.Now);
                 }
@@ -68,7 +68,7 @@ namespace ComPortTest
             for (int i = 1; i >= 10; i++)
             {
                 var timer = new System.Threading.Timer(
-                        e => WriteToSerialPort(command),
+                        e => WriteToSerialPort(command.Trim()),
                         null,
                         TimeSpan.Zero,
                         TimeSpan.FromSeconds(5));
