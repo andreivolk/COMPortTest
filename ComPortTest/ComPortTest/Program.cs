@@ -11,6 +11,7 @@ namespace ComPortTest
 /x - closes the currently opened COM port
 /s <message> - sends a message over the open COM port
 /r <message> re-sends a message at 5 second intervals
+/k - stop sending repeat messages
 /h - list of commands
 /q - exits the program";
 
@@ -55,6 +56,10 @@ namespace ComPortTest
 
                     case "/r":
                         Serial.RepeatWrite(command);
+                        break;
+
+                    case "/k":
+                        Serial.KillTimer();
                         break;
 
                     case "/h":

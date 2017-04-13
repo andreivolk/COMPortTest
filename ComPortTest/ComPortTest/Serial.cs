@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Text;
 using System.IO.Ports;
+using System.Timers;
 
 namespace ComPortTest
 {
     class Serial
     {
         private static SerialPort _serialPort = new SerialPort("COM999", 9600, Parity.None, 8, StopBits.One);
+        private static Timer repeatTimer;
+        private static string repeatCommand;
 
         public static void GetPorts()
         {
@@ -64,15 +67,24 @@ namespace ComPortTest
             }
         }
         public static void RepeatWrite(string command)
+        {            
+            repeatCommand = command.Trim();
+            repeatTimer = new Timer(5000);
+            repeatTimer.Elapsed += OnTimedEvent;
+            repeatTimer.AutoReset = true;
+            repeatTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            for (int i = 1; i >= 10; i++)
-            {
-                var timer = new System.Threading.Timer(
-                        e => WriteToSerialPort(command.Trim()),
-                        null,
-                        TimeSpan.Zero,
-                        TimeSpan.FromSeconds(5));
-            }
+            WriteToSerialPort(repeatCommand);
+        }
+
+        public static void KillTimer()
+        {
+            repeatTimer.Stop();
+            repeatTimer.Dispose();
+            Console.WriteLine("Stopped sending repeat messages");
         }
     }
 }
